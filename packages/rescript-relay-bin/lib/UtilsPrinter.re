@@ -78,7 +78,8 @@ let printFullGetConnectionNodesFnDefinition =
       ~edgesNullable,
       ~nodeNullable,
     ) =>
-  "let "
+  "@live\n"
+  ++ "let "
   ++ functionName
   ++ ":\n  "
   ++ (connectionPropNullable ? "option<" : "")

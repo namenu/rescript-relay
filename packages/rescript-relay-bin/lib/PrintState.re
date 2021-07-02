@@ -288,15 +288,15 @@ let getPrintedFullState =
     | Query(_)
     | Mutation(_) =>
       add_to_internal(
-        "type wrapRawResponseRaw = wrapResponseRaw\n"
-        ++ "let convertWrapRawResponse = convertWrapResponse\n",
+        "@live\ntype wrapRawResponseRaw = wrapResponseRaw\n"
+        ++ "@live\nlet convertWrapRawResponse = convertWrapResponse\n",
       )
     | _ => ()
     };
 
     add_to_internal(
-      "type rawResponseRaw = responseRaw\n"
-      ++ "let convertRawResponse = convertResponse\n",
+      "@live\ntype rawResponseRaw = responseRaw\n"
+      ++ "@live\nlet convertRawResponse = convertResponse\n",
     );
   | (None, _) => ()
   };
@@ -358,7 +358,7 @@ let getPrintedFullState =
 
     // Print the connection key so it can be referenced from the outside if needed.
     add_to_utils(
-      "@inline\nlet connectionKey = \"" ++ connection.key ++ "\"\n\n",
+      "@live\n@inline\nlet connectionKey = \"" ++ connection.key ++ "\"\n\n",
     );
 
     switch (
@@ -462,7 +462,9 @@ let getPrintedFullState =
   if (utils_content^ != "") {
     // Disable warning 33 since this open might be unused (yes, even though we
     // did the check above).
-    addToStr("  @@ocaml.warning(\"-33\")\n  open Types\n");
+    addToStr(
+      "  @@ocaml.warning(\"-33\")\n  open Types\n",
+    );
   };
 
   addToStr(Utils.print_indented(2, utils_content^) ++ "\n}\n");

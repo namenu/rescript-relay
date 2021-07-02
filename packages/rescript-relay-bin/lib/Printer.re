@@ -9,6 +9,8 @@ type printingContext =
   | Other;
 
 let printQuoted = propName => "\"" ++ propName ++ "\"";
+
+let printLiveAnnotation = () => "@live\n";
 let makeUnionName = path =>
   path |> List.rev |> Tablecloth.String.join(~sep="_");
 
@@ -300,7 +302,7 @@ and printObjectMaker = (obj: object_, ~targetType, ~name) => {
   let str = ref("");
   let addToStr = s => str := str^ ++ s;
 
-  addToStr("let " ++ name ++ " = (");
+  addToStr(printLiveAnnotation() ++ "let " ++ name ++ " = (");
 
   if (hasContents) {
     let hasPrintedFragmentRefs = ref(false);
@@ -384,7 +386,7 @@ and printRefetchVariablesMaker = (obj: object_, ~state) => {
          ),
   };
 
-  addToStr("type refetchVariables = ");
+  addToStr(printLiveAnnotation() ++ "type refetchVariables = ");
   addToStr(
     printObject(~printingContext=Variables, ~state, ~obj=optionalObj, ()),
   );
@@ -404,11 +406,13 @@ and printRootType = (~recursiveMode=None, ~state: fullState, rootType) => {
   switch (rootType) {
   | Operation(Object(obj)) =>
     printRecordComment(obj)
+    ++ printLiveAnnotation()
     ++ "type response = "
     ++ printObject(~printingContext=Other, ~obj, ~state, ())
     ++ "\n"
   | RawResponse(Some(Object(obj))) =>
     printRecordComment(obj)
+    ++ printLiveAnnotation()
     ++ "type rawResponse = "
     ++ printObject(~printingContext=Other, ~obj, ~state, ())
     ++ "\n"
@@ -417,6 +421,7 @@ and printRootType = (~recursiveMode=None, ~state: fullState, rootType) => {
   | Operation(Union(_)) => raise(Invalid_top_level_shape)
   | Variables(Object(obj)) =>
     printRecordComment(obj)
+    ++ printLiveAnnotation()
     ++ "type variables = "
     ++ printObject(~printingContext=Variables, ~obj, ~state, ())
     ++ "\n"
@@ -436,7 +441,7 @@ and printRootType = (~recursiveMode=None, ~state: fullState, rootType) => {
          ~extraIndent=false,
        )
     ++ "\n"
-  | ObjectTypeDeclaration({name, definition}) =>
+  | ObjectTypeDeclaration({name, definition, atPath}) =>
     let typeDef =
       Tablecloth.String.uncapitalize(name)
       ++ (
@@ -455,10 +460,16 @@ and printRootType = (~recursiveMode=None, ~state: fullState, rootType) => {
         }
       );
 
+    let livePrefix =
+      switch (atPath) {
+      | ["fragment", ..._] => ""
+      | _ => "@live\n"
+      };
+
     let (prefix, suffix) =
       switch (recursiveMode) {
-      | None => ("type ", "\n")
-      | Some(`Head) => ("type rec ", "")
+      | None => (livePrefix ++ "type ", "\n")
+      | Some(`Head) => (livePrefix ++ "type rec ", "")
       | Some(`Member) => (" and ", "")
       | Some(`Tail) => (" and ", "\n\n")
       };
@@ -538,7 +549,8 @@ let printUnionConverters = (union: union) => {
 
   // Unwrap
   addToStr(
-    "let unwrap_"
+    printLiveAnnotation()
+    ++ "let unwrap_"
     ++ unionName
     ++ ": {. \"__typename\": string } => "
     ++ printUnionTypeDefinition(
@@ -563,7 +575,8 @@ let printUnionConverters = (union: union) => {
 
   // Wrap
   addToStr(
-    "let wrap_"
+    printLiveAnnotation()
+    ++ "let wrap_"
     ++ unionName
     ++ ": "
     ++ printUnionTypeDefinition(
@@ -643,7 +656,8 @@ let printUnionTypes = (~state, ~printName, union: union) => {
 };
 
 let printEnumToStringFn = (~printingContext, enum: fullEnum): string =>
-  "external "
+  printLiveAnnotation()
+  ++ "external "
   ++ printEnumName(~printingContext, ~prefix=false, enum.name)
   ++ "_toString:\n"
   ++ printEnumName(~printingContext, enum.name)

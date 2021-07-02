@@ -18,15 +18,18 @@ let printConverterAssets =
     definition |> UtilsPrinter.definitionToAssets(~rootObjects, ~direction);
 
   (includeRaw ? "type " ++ name ++ "Raw\n" : "")
+  ++ "@live\n"
   ++ "let "
   ++ name
   ++ "Converter: \n  Js.Dict.t<Js.Dict.t<Js.Dict.t<string>>> = \n  %raw(\n    json`"
   ++ UtilsPrinter.converterInstructionsToJson(assets.converterInstructions)
   ++ "`\n  )\n\n"
+  ++ "@live\n"
   ++ "let "
   ++ name
   ++ "ConverterMap = "
   ++ assets.convertersDefinition
+  ++ "\n@live"
   ++ "\nlet convert"
   ++ Tablecloth.String.capitalize(name)
   ++ " = v => v->RescriptRelay.convertObj(\n  "
