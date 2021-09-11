@@ -1,6 +1,6 @@
 {
   "name": "rescript-relay",
-  "version": "0.20.1",
+  "version": "0.21.1",
   "main": "src/RescriptRelay.res",
   "license": "MIT",
   "author": "Gabriel Nordeborn",
@@ -20,7 +20,8 @@
     "rescript"
   ],
   "bin": {
-    "rescript-relay-compiler": "compiler/compiler-cli.js"
+    "rescript-relay-compiler": "compiler/compiler-cli.js",
+    "rescript-relay-cli": "cli/cli.js"
   },
   "scripts": {
     "build": "rescript build -with-deps",

@@ -33,7 +33,7 @@ let createSubscriptionClient = createSubscriptionClient
 
 ```
 
-The following code is a Reason version of the example from the official Relay [documentation](https://relay.dev/docs/en/subscriptions#configure-network):
+The following code is a ReScript version of the example from the official Relay [documentation](https://relay.dev/docs/en/subscriptions#configure-network):
 
 ```reason
 /* RelayEnv.res */
@@ -88,7 +88,7 @@ type Ticket implements Node {
 }
 ```
 
-Then in your `Ticket.re` module we can subscribe to changes to the ticket status. Fragments in relay automatically subscribe to updates for the fragment data, see [Relay docs](https://relay.dev/docs/en/experimental/a-guided-tour-of-relay#fragments). So when we receive an event that the ticket status updated the fragments referencing the data will receive an update and re-render the new state.
+Then in your `Ticket.re` module we can subscribe to changes to the ticket status. Fragments in relay automatically subscribe to updates for the fragment data, see [Relay docs](https://relay.dev/docs/guided-tour/rendering/fragments). So when we receive an event that the ticket status updated the fragments referencing the data will receive an update and re-render the new state.
 
 ```reason
 /* Ticket.res */

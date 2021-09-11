@@ -99,7 +99,7 @@ Add a `relay.config.js` to your project root with the following in it:
 ```js
 // relay.config.js
 module.exports = {
-  src: "./src", // Path to the folder containing your Reason files
+  src: "./src", // Path to the folder containing your ReScript files
   schema: "./schema.graphql", // Path to the schema.graphql you've exported from your API. Don't know what this is? It's a saved introspection of what your schema looks like. You can run `npx get-graphql-schema http://path/to/my/graphql/server > schema.graphql` in your root to generate it
   artifactDirectory: "./src/__generated__", // The directory where all generated files will be emitted
 
@@ -230,3 +230,7 @@ We also have to render the app in concurrent mode. Check out how the example app
 ## Time to make your first query
 
 There, all set up and ready to go! Time to [make your first query](making-queries).
+
+## Advanced
+
+You really don't need to dive into the deep end of things just yet, but once you feel all set up and ready, you should read [this section on keeping your RescriptRelay codebase healthy](codebase-health-considerations).

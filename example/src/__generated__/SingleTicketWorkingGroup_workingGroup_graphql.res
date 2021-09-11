@@ -1,3 +1,4 @@
+/* @sourceLoc SingleTicketWorkingGroup.res */
 /* @generated */
 %%raw("/* @generated */")
 module Types = {
@@ -12,7 +13,6 @@ module Types = {
    and fragment_membersConnection_edges_node = {
     id: string,
     fullName: string,
-    fragmentRefs: RescriptRelay.fragmentRefs<[ | #Avatar_user]>
   }
   
   
@@ -28,7 +28,7 @@ module Internal = {
   let fragmentConverter: 
     Js.Dict.t<Js.Dict.t<Js.Dict.t<string>>> = 
     %raw(
-      json`{"__root":{"membersConnection_edges":{"n":"","na":""},"membersConnection":{"n":""},"membersConnection_edges_node":{"f":"","n":""}}}`
+      json`{"__root":{"membersConnection_edges":{"n":"","na":""},"membersConnection":{"n":""},"membersConnection_edges_node":{"n":""}}}`
     )
   
   let fragmentConverterMap = ()
@@ -126,11 +126,6 @@ return {
                       "kind": "ScalarField",
                       "name": "fullName",
                       "storageKey": null
-                    },
-                    {
-                      "args": null,
-                      "kind": "FragmentSpread",
-                      "name": "Avatar_user"
                     }
                   ],
                   "storageKey": null

@@ -1,3 +1,4 @@
+/* @sourceLoc TicketStatusBadge.res */
 /* @generated */
 %%raw("/* @generated */")
 module Types = {
@@ -19,7 +20,6 @@ module Types = {
   
   type fragment = {
     status: enum_TicketStatus,
-    dbId: string,
   }
 }
 
@@ -67,13 +67,6 @@ let node: operationType = %raw(json` {
       "args": null,
       "kind": "ScalarField",
       "name": "status",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "dbId",
       "storageKey": null
     }
   ],
